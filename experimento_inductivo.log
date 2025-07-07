@@ -1,0 +1,113 @@
+2025-06-21 23:01:22,123 - --- Iniciando Experimento: MODO TEMPORAL_INDUCTIVE ---
+2025-06-21 23:01:59,706 - División Temporal: 13545 train | 1692 val | 1692 test
+2025-06-21 23:02:04,799 - Iniciando exportación de grafos de splits para Gephi...
+2025-06-21 23:02:04,941 - Grafo del split 'train' exportado en: grafo_train.gexf
+2025-06-21 23:02:05,001 - Grafo del split 'val' exportado en: grafo_val.gexf
+2025-06-21 23:02:05,065 - Grafo del split 'test' exportado en: grafo_test.gexf
+2025-06-21 23:02:05,065 - Exportación de grafos completada.
+2025-06-21 23:02:05,076 - 
+========================= INICIANDO EJECUCIÓN 1/5 =========================
+2025-06-21 23:02:05,213 - Modo Inductivo: El encoder solo ve la estructura de entrenamiento (cold-start).
+2025-06-21 23:02:57,526 - Decoder Epoch 10, Loss: 0.6575, Val Hits@50: 0.9208
+2025-06-21 23:02:59,582 - Decoder Epoch 20, Loss: 0.6113, Val Hits@50: 0.9238
+2025-06-21 23:03:01,899 - Decoder Epoch 30, Loss: 0.5693, Val Hits@50: 0.9243
+2025-06-21 23:03:04,837 - Decoder Epoch 40, Loss: 0.5190, Val Hits@50: 0.9249
+2025-06-21 23:03:08,564 - Decoder Epoch 50, Loss: 0.4795, Val Hits@50: 0.9243
+2025-06-21 23:03:12,749 - Decoder Epoch 60, Loss: 0.4319, Val Hits@50: 0.9238
+2025-06-21 23:03:18,671 - Decoder Epoch 70, Loss: 0.3842, Val Hits@50: 0.9261
+2025-06-21 23:03:23,665 - Decoder Epoch 80, Loss: 0.3522, Val Hits@50: 0.9261
+2025-06-21 23:03:28,868 - Decoder Epoch 90, Loss: 0.3152, Val Hits@50: 0.9285
+2025-06-21 23:03:34,950 - Decoder Epoch 100, Loss: 0.2887, Val Hits@50: 0.9326
+2025-06-21 23:03:38,837 - 
+Resultados de la Ejecución en Test:
+2025-06-21 23:03:38,840 - Hits@50: 0.9072
+2025-06-21 23:03:38,840 - ROC-AUC: 0.8650
+2025-06-21 23:03:38,842 - AP: 0.8904
+2025-06-21 23:03:38,843 - --> Tiempo de la Ejecución 1: 93.76 segundos
+2025-06-21 23:03:38,886 - 
+========================= INICIANDO EJECUCIÓN 2/5 =========================
+2025-06-21 23:03:38,894 - Modo Inductivo: El encoder solo ve la estructura de entrenamiento (cold-start).
+2025-06-21 23:05:20,388 - Decoder Epoch 10, Loss: 0.6528, Val Hits@50: 0.9119
+2025-06-21 23:05:26,915 - Decoder Epoch 20, Loss: 0.6028, Val Hits@50: 0.9220
+2025-06-21 23:05:30,973 - Decoder Epoch 30, Loss: 0.5502, Val Hits@50: 0.9208
+2025-06-21 23:05:36,343 - Decoder Epoch 40, Loss: 0.4950, Val Hits@50: 0.9202
+2025-06-21 23:05:41,280 - Decoder Epoch 50, Loss: 0.4460, Val Hits@50: 0.9232
+2025-06-21 23:05:49,950 - Decoder Epoch 60, Loss: 0.3932, Val Hits@50: 0.9232
+2025-06-21 23:05:57,040 - Decoder Epoch 70, Loss: 0.3545, Val Hits@50: 0.9220
+2025-06-21 23:06:07,244 - Decoder Epoch 80, Loss: 0.3125, Val Hits@50: 0.9149
+2025-06-21 23:06:16,018 - Decoder Epoch 90, Loss: 0.2932, Val Hits@50: 0.9214
+2025-06-21 23:06:22,436 - Decoder Epoch 100, Loss: 0.2718, Val Hits@50: 0.9226
+2025-06-21 23:06:25,647 - 
+Resultados de la Ejecución en Test:
+2025-06-21 23:06:25,647 - Hits@50: 0.9031
+2025-06-21 23:06:25,647 - ROC-AUC: 0.8452
+2025-06-21 23:06:25,651 - AP: 0.8614
+2025-06-21 23:06:25,652 - --> Tiempo de la Ejecución 2: 166.76 segundos
+2025-06-21 23:06:25,653 - 
+========================= INICIANDO EJECUCIÓN 3/5 =========================
+2025-06-21 23:06:25,663 - Modo Inductivo: El encoder solo ve la estructura de entrenamiento (cold-start).
+2025-06-21 23:08:33,420 - Decoder Epoch 10, Loss: 0.6459, Val Hits@50: 0.9314
+2025-06-21 23:08:39,720 - Decoder Epoch 20, Loss: 0.5937, Val Hits@50: 0.9320
+2025-06-21 23:08:45,322 - Decoder Epoch 30, Loss: 0.5394, Val Hits@50: 0.9279
+2025-06-21 23:08:52,425 - Decoder Epoch 40, Loss: 0.4927, Val Hits@50: 0.9320
+2025-06-21 23:08:59,547 - Decoder Epoch 50, Loss: 0.4403, Val Hits@50: 0.9297
+2025-06-21 23:09:05,095 - Decoder Epoch 60, Loss: 0.4002, Val Hits@50: 0.9184
+2025-06-21 23:09:13,528 - Decoder Epoch 70, Loss: 0.3579, Val Hits@50: 0.9190
+2025-06-21 23:09:16,959 - Decoder Epoch 80, Loss: 0.3242, Val Hits@50: 0.9208
+2025-06-21 23:09:18,811 - Decoder Epoch 90, Loss: 0.2903, Val Hits@50: 0.9220
+2025-06-21 23:09:20,699 - Decoder Epoch 100, Loss: 0.2593, Val Hits@50: 0.9279
+2025-06-21 23:09:21,910 - 
+Resultados de la Ejecución en Test:
+2025-06-21 23:09:21,910 - Hits@50: 0.9226
+2025-06-21 23:09:21,910 - ROC-AUC: 0.8591
+2025-06-21 23:09:21,911 - AP: 0.8714
+2025-06-21 23:09:21,911 - --> Tiempo de la Ejecución 3: 176.26 segundos
+2025-06-21 23:09:21,912 - 
+========================= INICIANDO EJECUCIÓN 4/5 =========================
+2025-06-21 23:09:21,915 - Modo Inductivo: El encoder solo ve la estructura de entrenamiento (cold-start).
+2025-06-21 23:10:47,403 - Decoder Epoch 10, Loss: 0.6475, Val Hits@50: 0.9149
+2025-06-21 23:10:52,985 - Decoder Epoch 20, Loss: 0.6000, Val Hits@50: 0.9208
+2025-06-21 23:10:58,598 - Decoder Epoch 30, Loss: 0.5453, Val Hits@50: 0.9255
+2025-06-21 23:11:05,391 - Decoder Epoch 40, Loss: 0.4938, Val Hits@50: 0.9279
+2025-06-21 23:11:11,073 - Decoder Epoch 50, Loss: 0.4415, Val Hits@50: 0.9249
+2025-06-21 23:11:16,917 - Decoder Epoch 60, Loss: 0.3950, Val Hits@50: 0.9226
+2025-06-21 23:11:22,673 - Decoder Epoch 70, Loss: 0.3512, Val Hits@50: 0.9232
+2025-06-21 23:11:27,680 - Decoder Epoch 80, Loss: 0.3191, Val Hits@50: 0.9214
+2025-06-21 23:11:35,413 - Decoder Epoch 90, Loss: 0.2898, Val Hits@50: 0.9220
+2025-06-21 23:11:40,665 - Decoder Epoch 100, Loss: 0.2660, Val Hits@50: 0.9255
+2025-06-21 23:11:44,437 - 
+Resultados de la Ejecución en Test:
+2025-06-21 23:11:44,437 - Hits@50: 0.9119
+2025-06-21 23:11:44,437 - ROC-AUC: 0.8469
+2025-06-21 23:11:44,439 - AP: 0.8775
+2025-06-21 23:11:44,441 - --> Tiempo de la Ejecución 4: 142.53 segundos
+2025-06-21 23:11:44,443 - 
+========================= INICIANDO EJECUCIÓN 5/5 =========================
+2025-06-21 23:11:44,453 - Modo Inductivo: El encoder solo ve la estructura de entrenamiento (cold-start).
+2025-06-21 23:13:05,154 - Decoder Epoch 10, Loss: 0.6399, Val Hits@50: 0.9444
+2025-06-21 23:13:12,204 - Decoder Epoch 20, Loss: 0.5887, Val Hits@50: 0.9385
+2025-06-21 23:13:17,613 - Decoder Epoch 30, Loss: 0.5393, Val Hits@50: 0.9356
+2025-06-21 23:13:22,777 - Decoder Epoch 40, Loss: 0.4885, Val Hits@50: 0.9332
+2025-06-21 23:13:27,245 - Decoder Epoch 50, Loss: 0.4416, Val Hits@50: 0.9326
+2025-06-21 23:13:32,774 - Decoder Epoch 60, Loss: 0.3942, Val Hits@50: 0.9332
+2025-06-21 23:13:38,642 - Decoder Epoch 70, Loss: 0.3566, Val Hits@50: 0.9350
+2025-06-21 23:13:44,440 - Decoder Epoch 80, Loss: 0.3234, Val Hits@50: 0.9385
+2025-06-21 23:13:52,594 - Decoder Epoch 90, Loss: 0.2963, Val Hits@50: 0.9385
+2025-06-21 23:13:59,338 - Decoder Epoch 100, Loss: 0.2754, Val Hits@50: 0.9385
+2025-06-21 23:14:02,552 - 
+Resultados de la Ejecución en Test:
+2025-06-21 23:14:02,553 - Hits@50: 0.9208
+2025-06-21 23:14:02,553 - ROC-AUC: 0.8573
+2025-06-21 23:14:02,553 - AP: 0.8707
+2025-06-21 23:14:02,555 - --> Tiempo de la Ejecución 5: 138.11 segundos
+2025-06-21 23:14:02,555 - 
+==================== RESULTADO FINAL AGREGADO (TEMPORAL_INDUCTIVE) ====================
+2025-06-21 23:14:02,563 - Hits@50: 0.9131 ± 0.0076
+2025-06-21 23:14:02,563 - ROC-AUC: 0.8547 ± 0.0075
+2025-06-21 23:14:02,563 - AP: 0.8743 ± 0.0096
+2025-06-21 23:14:02,569 - 
+--- Tiempos de Ejecución ---
+2025-06-21 23:14:02,570 - Tiempo total para 5 ejecuciones: 717.49 segundos (11.96 minutos)
+2025-06-21 23:14:02,570 - Tiempo promedio por ejecución: 143.50 segundos
+2025-06-21 23:14:02,605 - 
+Predicciones detalladas del Test Set guardadas en: link_predictions_test_set.csv

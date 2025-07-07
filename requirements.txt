@@ -1,0 +1,9 @@
+#Dependencias
+torch
+torch-geometric
+networkx
+numpy
+pandas
+openpyxl
+scikit-learn
+PyYAML

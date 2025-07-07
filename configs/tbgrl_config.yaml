@@ -1,0 +1,29 @@
+# configs/tbgrl_config.yaml
+
+# --- CONFIGURACIÓN DEL EXPERIMENTO ---
+split_method: 'temporal_inductive'  # Opciones: 'temporal_transductive', 'temporal_inductive'
+
+# Parámetros de la división de datos temporal
+val_pct: 0.10   # 10% de los datos para validación
+test_pct: 0.10  # 10% de los datos para prueba
+
+
+# --- HIPERPARÁMETROS DEL MODELO Y ENTRENAMIENTO ---
+emb_dim: 64
+hidden_dim: 128
+out_dim: 64
+
+lr_encoder: 0.005
+lr_decoder: 0.001
+epochs_encoder: 200
+epochs_decoder: 100
+
+# Parámetros de T-BGRL
+ema_decay: 0.99
+lambda_t-bgrl: 0.5  # Peso para la pérdida de corrupción
+drop_edge_p: 0.2
+drop_feat_p: 0.1
+
+# Parámetros de Evaluación
+k_hits: 50
+num_runs: 5 # Número de ejecuciones para promediar resultados

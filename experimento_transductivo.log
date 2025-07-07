@@ -1,0 +1,108 @@
+2025-06-21 22:21:21,254 - --- Iniciando Experimento: MODO TEMPORAL_TRANSDUCTIVE ---
+2025-06-21 22:21:39,102 - División Temporal: 13545 train | 1692 val | 1692 test
+2025-06-21 22:21:40,497 - 
+========================= INICIANDO EJECUCIÓN 1/5 =========================
+2025-06-21 22:21:40,573 - Modo Transductivo: El encoder ve toda la estructura del grafo para aprender embeddings.
+2025-06-21 22:22:08,833 - Decoder Epoch 10, Loss: 0.6471, Val Hits@50: 0.9326
+2025-06-21 22:22:10,643 - Decoder Epoch 20, Loss: 0.5935, Val Hits@50: 0.9397
+2025-06-21 22:22:12,734 - Decoder Epoch 30, Loss: 0.5355, Val Hits@50: 0.9397
+2025-06-21 22:22:14,474 - Decoder Epoch 40, Loss: 0.4738, Val Hits@50: 0.9492
+2025-06-21 22:22:16,194 - Decoder Epoch 50, Loss: 0.4224, Val Hits@50: 0.9492
+2025-06-21 22:22:18,027 - Decoder Epoch 60, Loss: 0.3760, Val Hits@50: 0.9492
+2025-06-21 22:22:19,918 - Decoder Epoch 70, Loss: 0.3338, Val Hits@50: 0.9504
+2025-06-21 22:22:21,713 - Decoder Epoch 80, Loss: 0.3010, Val Hits@50: 0.9504
+2025-06-21 22:22:23,680 - Decoder Epoch 90, Loss: 0.2766, Val Hits@50: 0.9509
+2025-06-21 22:22:25,723 - Decoder Epoch 100, Loss: 0.2468, Val Hits@50: 0.9509
+2025-06-21 22:22:27,166 - 
+Resultados de la Ejecución en Test:
+2025-06-21 22:22:27,166 - Hits@50: 0.9385
+2025-06-21 22:22:27,166 - ROC-AUC: 0.8846
+2025-06-21 22:22:27,166 - AP: 0.8782
+2025-06-21 22:22:27,166 - --> Tiempo de la Ejecución 1: 46.67 segundos
+2025-06-21 22:22:27,166 - 
+========================= INICIANDO EJECUCIÓN 2/5 =========================
+2025-06-21 22:22:27,182 - Modo Transductivo: El encoder ve toda la estructura del grafo para aprender embeddings.
+2025-06-21 22:22:55,970 - Decoder Epoch 10, Loss: 0.6346, Val Hits@50: 0.9255
+2025-06-21 22:22:58,022 - Decoder Epoch 20, Loss: 0.5784, Val Hits@50: 0.9379
+2025-06-21 22:22:59,833 - Decoder Epoch 30, Loss: 0.5217, Val Hits@50: 0.9675
+2025-06-21 22:23:01,973 - Decoder Epoch 40, Loss: 0.4685, Val Hits@50: 0.9687
+2025-06-21 22:23:03,660 - Decoder Epoch 50, Loss: 0.4212, Val Hits@50: 0.9663
+2025-06-21 22:23:05,621 - Decoder Epoch 60, Loss: 0.3752, Val Hits@50: 0.9699
+2025-06-21 22:23:07,815 - Decoder Epoch 70, Loss: 0.3374, Val Hits@50: 0.9716
+2025-06-21 22:23:09,564 - Decoder Epoch 80, Loss: 0.3037, Val Hits@50: 0.9758
+2025-06-21 22:23:11,555 - Decoder Epoch 90, Loss: 0.2729, Val Hits@50: 0.9817
+2025-06-21 22:23:13,280 - Decoder Epoch 100, Loss: 0.2481, Val Hits@50: 0.9840
+2025-06-21 22:23:14,409 - 
+Resultados de la Ejecución en Test:
+2025-06-21 22:23:14,409 - Hits@50: 0.9379
+2025-06-21 22:23:14,409 - ROC-AUC: 0.8750
+2025-06-21 22:23:14,409 - AP: 0.8787
+2025-06-21 22:23:14,409 - --> Tiempo de la Ejecución 2: 47.24 segundos
+2025-06-21 22:23:14,409 - 
+========================= INICIANDO EJECUCIÓN 3/5 =========================
+2025-06-21 22:23:14,409 - Modo Transductivo: El encoder ve toda la estructura del grafo para aprender embeddings.
+2025-06-21 22:23:48,891 - Decoder Epoch 10, Loss: 0.6439, Val Hits@50: 0.9220
+2025-06-21 22:23:50,640 - Decoder Epoch 20, Loss: 0.5948, Val Hits@50: 0.9267
+2025-06-21 22:23:52,719 - Decoder Epoch 30, Loss: 0.5401, Val Hits@50: 0.9616
+2025-06-21 22:23:54,546 - Decoder Epoch 40, Loss: 0.4841, Val Hits@50: 0.9580
+2025-06-21 22:23:56,297 - Decoder Epoch 50, Loss: 0.4296, Val Hits@50: 0.9580
+2025-06-21 22:23:58,105 - Decoder Epoch 60, Loss: 0.3814, Val Hits@50: 0.9586
+2025-06-21 22:23:59,829 - Decoder Epoch 70, Loss: 0.3351, Val Hits@50: 0.9586
+2025-06-21 22:24:01,620 - Decoder Epoch 80, Loss: 0.3037, Val Hits@50: 0.9580
+2025-06-21 22:24:03,467 - Decoder Epoch 90, Loss: 0.2725, Val Hits@50: 0.9586
+2025-06-21 22:24:05,362 - Decoder Epoch 100, Loss: 0.2551, Val Hits@50: 0.9592
+2025-06-21 22:24:06,478 - 
+Resultados de la Ejecución en Test:
+2025-06-21 22:24:06,478 - Hits@50: 0.9309
+2025-06-21 22:24:06,478 - ROC-AUC: 0.8676
+2025-06-21 22:24:06,478 - AP: 0.8497
+2025-06-21 22:24:06,481 - --> Tiempo de la Ejecución 3: 52.07 segundos
+2025-06-21 22:24:06,481 - 
+========================= INICIANDO EJECUCIÓN 4/5 =========================
+2025-06-21 22:24:06,481 - Modo Transductivo: El encoder ve toda la estructura del grafo para aprender embeddings.
+2025-06-21 22:24:40,360 - Decoder Epoch 10, Loss: 0.6468, Val Hits@50: 0.9427
+2025-06-21 22:24:42,778 - Decoder Epoch 20, Loss: 0.5968, Val Hits@50: 0.9421
+2025-06-21 22:24:44,553 - Decoder Epoch 30, Loss: 0.5393, Val Hits@50: 0.9770
+2025-06-21 22:24:46,290 - Decoder Epoch 40, Loss: 0.4801, Val Hits@50: 0.9811
+2025-06-21 22:24:48,200 - Decoder Epoch 50, Loss: 0.4285, Val Hits@50: 0.9817
+2025-06-21 22:24:49,915 - Decoder Epoch 60, Loss: 0.3807, Val Hits@50: 0.9823
+2025-06-21 22:24:51,656 - Decoder Epoch 70, Loss: 0.3487, Val Hits@50: 0.9835
+2025-06-21 22:24:53,467 - Decoder Epoch 80, Loss: 0.3090, Val Hits@50: 0.9846
+2025-06-21 22:24:55,412 - Decoder Epoch 90, Loss: 0.2795, Val Hits@50: 0.9858
+2025-06-21 22:24:57,423 - Decoder Epoch 100, Loss: 0.2589, Val Hits@50: 0.9846
+2025-06-21 22:24:58,805 - 
+Resultados de la Ejecución en Test:
+2025-06-21 22:24:58,805 - Hits@50: 0.9291
+2025-06-21 22:24:58,805 - ROC-AUC: 0.8622
+2025-06-21 22:24:58,805 - AP: 0.8527
+2025-06-21 22:24:58,805 - --> Tiempo de la Ejecución 4: 52.32 segundos
+2025-06-21 22:24:58,805 - 
+========================= INICIANDO EJECUCIÓN 5/5 =========================
+2025-06-21 22:24:58,814 - Modo Transductivo: El encoder ve toda la estructura del grafo para aprender embeddings.
+2025-06-21 22:26:09,287 - Decoder Epoch 10, Loss: 0.6513, Val Hits@50: 0.9232
+2025-06-21 22:26:15,087 - Decoder Epoch 20, Loss: 0.5989, Val Hits@50: 0.9291
+2025-06-21 22:26:19,689 - Decoder Epoch 30, Loss: 0.5395, Val Hits@50: 0.9580
+2025-06-21 22:26:24,171 - Decoder Epoch 40, Loss: 0.4796, Val Hits@50: 0.9586
+2025-06-21 22:26:29,305 - Decoder Epoch 50, Loss: 0.4268, Val Hits@50: 0.9586
+2025-06-21 22:26:35,540 - Decoder Epoch 60, Loss: 0.3805, Val Hits@50: 0.9622
+2025-06-21 22:26:42,561 - Decoder Epoch 70, Loss: 0.3402, Val Hits@50: 0.9622
+2025-06-21 22:26:50,591 - Decoder Epoch 80, Loss: 0.3051, Val Hits@50: 0.9663
+2025-06-21 22:26:53,765 - Decoder Epoch 90, Loss: 0.2812, Val Hits@50: 0.9710
+2025-06-21 22:26:57,114 - Decoder Epoch 100, Loss: 0.2554, Val Hits@50: 0.9728
+2025-06-21 22:26:59,386 - 
+Resultados de la Ejecución en Test:
+2025-06-21 22:26:59,386 - Hits@50: 0.9202
+2025-06-21 22:26:59,386 - ROC-AUC: 0.8652
+2025-06-21 22:26:59,386 - AP: 0.8666
+2025-06-21 22:26:59,401 - --> Tiempo de la Ejecución 5: 120.60 segundos
+2025-06-21 22:26:59,401 - 
+==================== RESULTADO FINAL AGREGADO (TEMPORAL_TRANSDUCTIVE) ====================
+2025-06-21 22:26:59,401 - Hits@50: 0.9313 ± 0.0067
+2025-06-21 22:26:59,408 - ROC-AUC: 0.8709 ± 0.0080
+2025-06-21 22:26:59,408 - AP: 0.8652 ± 0.0123
+2025-06-21 22:26:59,409 - 
+--- Tiempos de Ejecución ---
+2025-06-21 22:26:59,410 - Tiempo total para 5 ejecuciones: 318.91 segundos (5.32 minutos)
+2025-06-21 22:26:59,411 - Tiempo promedio por ejecución: 63.78 segundos
+2025-06-21 22:26:59,448 - 
+Predicciones detalladas del Test Set guardadas en: link_predictions_test_set.csv
