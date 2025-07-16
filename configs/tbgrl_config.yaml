@@ -1,29 +1,40 @@
 # configs/tbgrl_config.yaml
 
-# --- CONFIGURACIÓN DEL EXPERIMENTO ---
-split_method: 'temporal_inductive'  # Opciones: 'temporal_transductive', 'temporal_inductive'
+# Parámetros del Encoder (GCNEncoder)
+encoder_emb_dim: 64         # Dimensión del embedding inicial de los nodos (para los 'tipo_ids')
+encoder_hidden_dim: 128     # Dimensión de las capas ocultas del GCNEncoder
+encoder_out_dim: 64         # Dimensión de salida del GCNEncoder (embeddings de nodos)
 
-# Parámetros de la división de datos temporal
-val_pct: 0.10   # 10% de los datos para validación
-test_pct: 0.10  # 10% de los datos para prueba
+# Parámetros del Predictor (para el pre-entrenamiento de T-BGRL)
+predictor_hidden_dim: 128   # Dimensión de la capa oculta del Predictor
+predictor_out_dim: 64       # Dimensión de salida del Predictor (debe coincidir con encoder_out_dim)
 
+# Parámetros del Link Predictor (Decoder para la tarea downstream)
+link_predictor_hidden_dim: 128 # Dimensión de la capa oculta del LinkPredictor (si usas MLP)
 
-# --- HIPERPARÁMETROS DEL MODELO Y ENTRENAMIENTO ---
-emb_dim: 64
-hidden_dim: 128
-out_dim: 64
+# Parámetros de pre-entrenamiento (T-BGRL)
+pretrain_epochs: 200        # Número de épocas para el pre-entrenamiento del encoder
+lr: 0.001                   # Tasa de aprendizaje para el pre-entrenamiento
+ema_decay: 0.99             # Tasa de decaimiento EMA para la red target
+lambda: 0.5                 # Parámetro lambda para la pérdida de T-BGRL (balance atractivo/repulsivo)
 
-lr_encoder: 0.005
-lr_decoder: 0.001
-epochs_encoder: 200
-epochs_decoder: 100
+# Parámetros de aumentación y corrupción (para utils/augmentations.py)
+drop_feat_p: 0.1            # Probabilidad de drop de características de nodos
+drop_edge_p: 0.2            # Probabilidad base de drop de aristas (modificada por el peso)
+min_corrupted_edge_weight: 0.01 # Peso asignado a las aristas corruptas (muy bajo)
 
-# Parámetros de T-BGRL
-ema_decay: 0.99
-lambda_t-bgrl: 0.5  # Peso para la pérdida de corrupción
-drop_edge_p: 0.2
-drop_feat_p: 0.1
+# Parámetros para el entrenamiento del Link Predictor (fase de fine-tuning)
+lp_epochs: 100              # Número de épocas para entrenar el LinkPredictor
+lp_lr: 0.005                # Tasa de aprendizaje para el LinkPredictor
+eval_every: 10              # Frecuencia de evaluación durante el entrenamiento del LP
+k: 50                       # Parámetro k para la métrica Hits@K
 
-# Parámetros de Evaluación
-k_hits: 50
-num_runs: 5 # Número de ejecuciones para promediar resultados
+# Parámetros para la carga y división de datos (data/dataset_loader.py)
+train_size: 0.8             # Porcentaje de datos para entrenamiento
+val_size: 0.1               # Porcentaje de datos para validación
+random_state: 42            # Semilla para la aleatoriedad (si aplica en futuras versiones)
+
+# Rutas a los archivos de datos (ejemplo, se definen en main.py)
+# data_file_paths:
+#   - 'data/raw/SISMETRO-Exportação-SS-2021-2024.xlsx - SISMETRO-Exportação-SS-csv (2).csv'
+#   - 'data/raw/SISMETRO-Exportação-SS-2021-2024_P1(OK PATRIMONIO).xlsx - Sheet1.csv'

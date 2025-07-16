@@ -1,0 +1,98 @@
+2025-07-07 19:39:33,054 - INFO - Iniciando el pipeline de WBT-GL para Link Prediction.
+2025-07-07 19:39:33,059 - INFO - Hiperparámetros cargados exitosamente.
+2025-07-07 19:39:33,061 - INFO - Usando dispositivo: cpu
+2025-07-07 19:39:51,285 - INFO - Datos cargados y preparados exitosamente.
+2025-07-07 19:39:51,290 - INFO - División Temporal: 2957 total enlaces. Train: 2538 | Val: 940 | Test: 946
+2025-07-07 19:39:51,290 - INFO - Iniciando exportación de grafos de splits para Gephi...
+2025-07-07 19:39:51,566 - INFO - Exportación de grafos completada.
+2025-07-07 19:39:51,574 - INFO - 
+========================= INICIANDO EJECUCIÓN 1/5 =========================
+2025-07-07 19:39:51,635 - INFO - Modelos inicializados para esta ejecución.
+2025-07-07 19:39:51,635 - INFO - Modo Inductivo: El encoder solo ve la estructura de entrenamiento (cold-start).
+2025-07-07 19:39:51,635 - INFO - Iniciando pre-entrenamiento de T-BGRL para el Encoder...
+2025-07-07 19:40:01,122 - INFO - Pre-entrenamiento del Encoder completado.
+2025-07-07 19:40:01,134 - INFO - Embeddings finales de nodos generados. Forma: torch.Size([2798, 64])
+2025-07-07 19:40:01,134 - INFO - Iniciando entrenamiento del Link Predictor (Decoder)...
+2025-07-07 19:40:07,158 - INFO - Entrenamiento del Link Predictor completado.
+2025-07-07 19:40:07,160 - INFO - 
+Resultados de la Ejecución en Test:
+2025-07-07 19:40:07,160 - INFO - Hits@50: 0.8129
+2025-07-07 19:40:07,160 - INFO - ROC-AUC: 0.9680
+2025-07-07 19:40:07,160 - INFO - AP: 0.9645
+2025-07-07 19:40:07,160 - INFO - --> Tiempo de la Ejecución 1: 15.59 segundos
+2025-07-07 19:40:07,190 - INFO - Predicciones detalladas del Test Set para la Ejecución 1 guardadas en: link_predictions_test_set_run_1.csv
+2025-07-07 19:40:07,190 - INFO - 
+========================= INICIANDO EJECUCIÓN 2/5 =========================
+2025-07-07 19:40:07,196 - INFO - Modelos inicializados para esta ejecución.
+2025-07-07 19:40:07,196 - INFO - Modo Inductivo: El encoder solo ve la estructura de entrenamiento (cold-start).
+2025-07-07 19:40:07,196 - INFO - Iniciando pre-entrenamiento de T-BGRL para el Encoder...
+2025-07-07 19:40:17,163 - INFO - Pre-entrenamiento del Encoder completado.
+2025-07-07 19:40:17,173 - INFO - Embeddings finales de nodos generados. Forma: torch.Size([2798, 64])
+2025-07-07 19:40:17,173 - INFO - Iniciando entrenamiento del Link Predictor (Decoder)...
+2025-07-07 19:40:23,464 - INFO - Entrenamiento del Link Predictor completado.
+2025-07-07 19:40:23,464 - INFO - 
+Resultados de la Ejecución en Test:
+2025-07-07 19:40:23,464 - INFO - Hits@50: 0.7706
+2025-07-07 19:40:23,467 - INFO - ROC-AUC: 0.9417
+2025-07-07 19:40:23,467 - INFO - AP: 0.9437
+2025-07-07 19:40:23,467 - INFO - --> Tiempo de la Ejecución 2: 16.27 segundos
+2025-07-07 19:40:23,481 - INFO - Predicciones detalladas del Test Set para la Ejecución 2 guardadas en: link_predictions_test_set_run_2.csv
+2025-07-07 19:40:23,488 - INFO - 
+========================= INICIANDO EJECUCIÓN 3/5 =========================
+2025-07-07 19:40:23,488 - INFO - Modelos inicializados para esta ejecución.
+2025-07-07 19:40:23,488 - INFO - Modo Inductivo: El encoder solo ve la estructura de entrenamiento (cold-start).
+2025-07-07 19:40:23,496 - INFO - Iniciando pre-entrenamiento de T-BGRL para el Encoder...
+2025-07-07 19:40:33,741 - INFO - Pre-entrenamiento del Encoder completado.
+2025-07-07 19:40:33,741 - INFO - Embeddings finales de nodos generados. Forma: torch.Size([2798, 64])
+2025-07-07 19:40:33,741 - INFO - Iniciando entrenamiento del Link Predictor (Decoder)...
+2025-07-07 19:40:39,686 - INFO - Entrenamiento del Link Predictor completado.
+2025-07-07 19:40:39,686 - INFO - 
+Resultados de la Ejecución en Test:
+2025-07-07 19:40:39,686 - INFO - Hits@50: 0.8531
+2025-07-07 19:40:39,686 - INFO - ROC-AUC: 0.9723
+2025-07-07 19:40:39,686 - INFO - AP: 0.9718
+2025-07-07 19:40:39,695 - INFO - --> Tiempo de la Ejecución 3: 16.20 segundos
+2025-07-07 19:40:39,710 - INFO - Predicciones detalladas del Test Set para la Ejecución 3 guardadas en: link_predictions_test_set_run_3.csv
+2025-07-07 19:40:39,710 - INFO - 
+========================= INICIANDO EJECUCIÓN 4/5 =========================
+2025-07-07 19:40:39,710 - INFO - Modelos inicializados para esta ejecución.
+2025-07-07 19:40:39,710 - INFO - Modo Inductivo: El encoder solo ve la estructura de entrenamiento (cold-start).
+2025-07-07 19:40:39,720 - INFO - Iniciando pre-entrenamiento de T-BGRL para el Encoder...
+2025-07-07 19:40:50,195 - INFO - Pre-entrenamiento del Encoder completado.
+2025-07-07 19:40:50,195 - INFO - Embeddings finales de nodos generados. Forma: torch.Size([2798, 64])
+2025-07-07 19:40:50,195 - INFO - Iniciando entrenamiento del Link Predictor (Decoder)...
+2025-07-07 19:40:57,090 - INFO - Entrenamiento del Link Predictor completado.
+2025-07-07 19:40:57,090 - INFO - 
+Resultados de la Ejecución en Test:
+2025-07-07 19:40:57,092 - INFO - Hits@50: 0.8256
+2025-07-07 19:40:57,092 - INFO - ROC-AUC: 0.9626
+2025-07-07 19:40:57,092 - INFO - AP: 0.9653
+2025-07-07 19:40:57,092 - INFO - --> Tiempo de la Ejecución 4: 17.38 segundos
+2025-07-07 19:40:57,100 - INFO - Predicciones detalladas del Test Set para la Ejecución 4 guardadas en: link_predictions_test_set_run_4.csv
+2025-07-07 19:40:57,108 - INFO - 
+========================= INICIANDO EJECUCIÓN 5/5 =========================
+2025-07-07 19:40:57,109 - INFO - Modelos inicializados para esta ejecución.
+2025-07-07 19:40:57,109 - INFO - Modo Inductivo: El encoder solo ve la estructura de entrenamiento (cold-start).
+2025-07-07 19:40:57,114 - INFO - Iniciando pre-entrenamiento de T-BGRL para el Encoder...
+2025-07-07 19:41:07,743 - INFO - Pre-entrenamiento del Encoder completado.
+2025-07-07 19:41:07,765 - INFO - Embeddings finales de nodos generados. Forma: torch.Size([2798, 64])
+2025-07-07 19:41:07,765 - INFO - Iniciando entrenamiento del Link Predictor (Decoder)...
+2025-07-07 19:41:13,925 - INFO - Entrenamiento del Link Predictor completado.
+2025-07-07 19:41:13,926 - INFO - 
+Resultados de la Ejecución en Test:
+2025-07-07 19:41:13,927 - INFO - Hits@50: 0.8626
+2025-07-07 19:41:13,928 - INFO - ROC-AUC: 0.9714
+2025-07-07 19:41:13,928 - INFO - AP: 0.9706
+2025-07-07 19:41:13,928 - INFO - --> Tiempo de la Ejecución 5: 16.82 segundos
+2025-07-07 19:41:13,931 - INFO - Predicciones detalladas del Test Set para la Ejecución 5 guardadas en: link_predictions_test_set_run_5.csv
+2025-07-07 19:41:13,940 - INFO - 
+==================== RESULTADO FINAL AGREGADO (TEMPORAL_INDUCTIVE) ====================
+2025-07-07 19:41:13,943 - INFO - Hits@50: 0.8249 ± 0.0326
+2025-07-07 19:41:13,943 - INFO - ROC-AUC: 0.9632 ± 0.0113
+2025-07-07 19:41:13,943 - INFO - AP: 0.9632 ± 0.0101
+2025-07-07 19:41:13,943 - INFO - 
+--- Tiempos de Ejecución ---
+2025-07-07 19:41:13,943 - INFO - Tiempo total para 5 ejecuciones: 82.25 segundos (1.37 minutos)
+2025-07-07 19:41:13,943 - INFO - Tiempo promedio por ejecución: 16.45 segundos
+2025-07-07 19:41:13,943 - INFO - 
+Pipeline de WBT-GL completado.

@@ -1,172 +1,209 @@
 # main.py
-import yaml
 import torch
-import pandas as pd
-import numpy as np
-from collections import defaultdict
-import copy
-import os
+import yaml
 import logging
-import time
+import time # Importar time para medir tiempos
+import numpy as np # Importar numpy para cálculos de media y std
 
-# Importar los módulos del proyecto
-from data.dataset_loader import preparar_dataset_desde_splits
+# Importar las clases y funciones actualizadas
+from data.dataset_loader import cargar_y_preparar_datos
 from models.gcn_encoder import GCNEncoder
 from models.predictor import Predictor
 from models.link_predictor import LinkPredictor
 from training.trainer import pretrain_tbgrl, train_link_predictor
-from utils.evaluation import evaluate
-from utils.export import export_splits_to_gephi # <-- Nueva importación
+from utils.evaluation import evaluate # evaluate para la evaluación final
+from utils.export import export_splits_to_gephi
+
+# --- MODIFICACIÓN AQUÍ: Configurar logging para escribir en un archivo y en la consola ---
+# Crear un logger personalizado para poder añadir múltiples handlers
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# Handler para la consola
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+logger.addHandler(console_handler)
+
+# Handler para el archivo de log
+file_handler = logging.FileHandler('experiment_log.log', mode='w', encoding='utf-8') # Guarda los logs en 'experiment_log.log'
+file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+logger.addHandler(file_handler)
+
+# Reemplazar logging.info/error con logger.info/error en el resto del script
+# Esto no es estrictamente necesario si ya se usa logging.info, pero es una buena práctica
+# cuando se configuran múltiples handlers. Por ahora, los logging.info existentes seguirán funcionando
+# con el root logger, que ahora también tiene los handlers añadidos.
 
 
-# --- Bloque para guardar las ejecuciones ---
-# incluirá el tiempo que tardó cada una de las 5 ejecuciones, y al final, un resumen con el tiempo total y el promedio.
-log_file_path = 'experimento.log'
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(message)s', # Se ha simplificado el formato para mayor claridad
-    handlers=[
-        logging.FileHandler(log_file_path, mode='w'),
-        logging.StreamHandler()
-    ]
-)
+def main():
+    logger.info("Iniciando el pipeline de WBT-GL para Link Prediction.") # Usar logger.info
 
-def get_edge_index_from_edges(edges):
-    """Crea un tensor de edge_index no dirigido a partir de una lista de enlaces."""
-    if not edges:
-        return torch.empty((2, 0), dtype=torch.long)
-    tensor_edges = torch.tensor(edges, dtype=torch.long).t()
-    return torch.cat([tensor_edges, tensor_edges.flip(0)], dim=1)
+    # 1. Cargar configuración de hiperparámetros
+    try:
+        with open('configs/tbgrl_config.yaml', 'r', encoding='utf-8') as f:
+            hparams = yaml.safe_load(f)
+        logger.info("Hiperparámetros cargados exitosamente.") # Usar logger.info
+    except FileNotFoundError:
+        logger.error("configs/tbgrl_config.yaml no encontrado. Asegúrate de que el archivo existe.") # Usar logger.error
+        return
+    except yaml.YAMLError as e:
+        logger.error(f"Error al parsear el archivo de configuración YAML: {e}") # Usar logger.error
+        return
 
-if __name__ == "__main__":
-    # === 1. Cargar Configuración ===
-    with open("configs/tbgrl_config.yaml", "r", encoding="utf-8") as f:
-        hparams = yaml.safe_load(f)
-    logging.info(f"--- Iniciando Experimento: MODO {hparams['split_method'].upper()} ---")
+    # 2. Configurar dispositivo (CPU/GPU)
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    logger.info(f"Usando dispositivo: {device}") # Usar logger.info
 
-    # === 2. Cargar y Dividir Datos Cronológicamente ===
-    file_path = "data/raw/SISMETRO-Exportação-SS-2021-2024_P1(OK PATRIMONIO).xlsx"
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"Archivo de datos no encontrado en: {file_path}")
-        
-    df_total = pd.read_excel(file_path)
+    # 3. Cargar y preparar los datos (Fuera del bucle de ejecución para que los datos sean los mismos en todas las ejecuciones)
+    file_paths = ['data/raw/SISMETRO-Exportação-SS-2021-2024_P1(OK PATRIMONIO).xlsx']
     
-    df_total['DATA DE ABERTURA'] = pd.to_datetime(df_total['DATA DE ABERTURA'])
-    df_total = df_total.sort_values(by='DATA DE ABERTURA').reset_index(drop=True)
+    try:
+        dataset_info, splits = cargar_y_preparar_datos(file_paths,
+                                                      train_size=hparams['train_size'],
+                                                      val_size=hparams['val_size'],
+                                                      random_state=hparams['random_state'])
+        logger.info("Datos cargados y preparados exitosamente.") # Usar logger.info
+        # Log de división temporal
+        logger.info(f"División Temporal: {len(dataset_info['G_full'].edges)} total enlaces. Train: {splits['train_edge_index'].size(1)} | Val: {splits['val_edge_index'].size(1)} | Test: {splits['test_edge_index'].size(1)}")
+    except Exception as e:
+        logger.error(f"Error al cargar o preparar los datos: {e}") # Usar logger.error
+        return
 
-    n = len(df_total)
-    test_size = int(hparams['test_pct'] * n)
-    val_size = int(hparams['val_pct'] * n)
-    train_size = n - val_size - test_size
+    # Exportar los grafos de los splits para Gephi (Solo una vez)
+    logger.info("Iniciando exportación de grafos de splits para Gephi...") # Usar logger.info
+    export_splits_to_gephi(splits, dataset_info['G_full'], dataset_info['idx2id'])
+    logger.info("Exportación de grafos completada.") # Usar logger.info
 
-    df_train = df_total.iloc[:train_size].copy()
-    df_val = df_total.iloc[train_size:train_size + val_size].copy()
-    df_test = df_total.iloc[train_size + val_size:].copy()
-    
-    logging.info(f"División Temporal: {len(df_train)} train | {len(df_val)} val | {len(df_test)} test")
+    # Extraer información relevante una vez para todas las ejecuciones
+    features = dataset_info['tipo_ids'].to(device)
+    num_node_feature_types = dataset_info['num_node_feature_types'] 
+    nodes_U_idx = dataset_info['nodes_U_idx'].to(device)
+    nodes_V_idx = dataset_info['nodes_V_idx'].to(device)
+    all_edges_set = dataset_info['all_edges_set']
 
-    # === 3. Preparar Grafo y Tensores ===
-    dataset, edges = preparar_dataset_desde_splits(df_train, df_val, df_test)
-    idx2id = {v: k for k, v in dataset['id2idx'].items()}
+    # Convertir los edge_index y edge_weight a tensores PyTorch y mover al dispositivo
+    for key in splits:
+        if isinstance(splits[key], torch.Tensor):
+            splits[key] = splits[key].to(device)
+        elif isinstance(splits[key], tuple) and all(isinstance(t, torch.Tensor) for t in splits[key]):
+            splits[key] = tuple(t.to(device) for t in splits[key])
 
-    # Llama a la función modularizada para exportar los grafos
-    export_splits_to_gephi(edges, dataset['G_full'], idx2id)
-    # --- FIN DEL BLOQUE ---
+    # Listas para almacenar resultados de múltiples ejecuciones
+    all_hits_at_k = []
+    all_roc_auc = []
+    all_ap_score = []
+    all_run_times = []
 
-    # === 4. Bucle de Múltiples Ejecuciones ===
-    # --- ### AÑADIDO: Identificar nodos por tipo para el muestreo bipartito ### ---
-    G_full = dataset['G_full']
-    nodes_A_idx = [dataset['id2idx'][n] for n, d in G_full.nodes(data=True) if d['node_type'] == 'A']
-    nodes_B_idx = [dataset['id2idx'][n] for n, d in G_full.nodes(data=True) if d['node_type'] == 'B']
-    all_edges_set = set(map(tuple, map(sorted, dataset['G_full'].edges())))
+    num_executions = hparams.get('num_executions', 5) # Obtener num_executions del config, por defecto 5
 
-    all_test_results = []
-    final_predictions_df = None
+    for run_idx in range(1, num_executions + 1):
+        logger.info(f"\n========================= INICIANDO EJECUCIÓN {run_idx}/{num_executions} =========================") # Usar logger.info
+        start_run_time = time.time() # Iniciar contador de tiempo para esta ejecución
 
-    # ### AÑADIDO ### Iniciar temporizador general del experimento
-    overall_start_time = time.time()
-
-    for run in range(hparams['num_runs']):
-        logging.info(f"\n{'='*25} INICIANDO EJECUCIÓN {run + 1}/{hparams['num_runs']} {'='*25}")
-        # ### AÑADIDO ### Iniciar temporizador para esta ejecución específica
-        run_start_time = time.time()
+        # Re-inicializar modelos para cada ejecución para asegurar independencia
+        encoder = GCNEncoder(
+            num_node_types=num_node_feature_types, 
+            emb_dim=hparams['encoder_emb_dim'],
+            hidden_dim=hparams['encoder_hidden_dim'],
+            out_dim=hparams['encoder_out_dim']
+        ).to(device)
         
-        encoder = GCNEncoder(dataset['num_tipos'], hparams['emb_dim'], hparams['hidden_dim'], hparams['out_dim'])
-        predictor = Predictor(in_dim=hparams['out_dim'])
-        decoder = LinkPredictor(in_dim=hparams['out_dim'])
-        
-        if hparams['split_method'] == 'temporal_transductive':
-            logging.info("Modo Transductivo: El encoder ve toda la estructura del grafo para aprender embeddings.")
-            all_known_edges = edges['train'] + edges['val'] + edges['test']
-            edge_index_encoder = get_edge_index_from_edges(all_known_edges)
-        elif hparams['split_method'] == 'temporal_inductive':
-            logging.info("Modo Inductivo: El encoder solo ve la estructura de entrenamiento (cold-start).")
-            edge_index_encoder = get_edge_index_from_edges(edges['train'])
-        else:
-            raise ValueError("split_method no reconocido en el archivo de configuración.")
+        predictor = Predictor(
+            in_dim=hparams['encoder_out_dim'],
+            hidden_dim=hparams['predictor_hidden_dim'],
+            out_dim=hparams['predictor_out_dim']
+        ).to(device)
 
-        dataset['features'] = dataset['tipo_ids'].float().unsqueeze(1) 
-        data_for_encoder = {**dataset, 'edge_index': edge_index_encoder}
-        
-        encoder = pretrain_tbgrl(encoder, predictor, data_for_encoder, hparams)
-        
-        decoder_dataset = {
-            **data_for_encoder,
-            'train_edges': edges['train'],
-            'val_edges': edges['val'],
-            'idx2id': idx2id,
-            'nodes_A_idx': nodes_A_idx,   # <-- Agrega esto
-            'nodes_B_idx': nodes_B_idx,    # <-- Y esto
-            'all_edges_set': all_edges_set  # <-- Agrega esto
-        }
-        best_decoder = train_link_predictor(encoder, decoder, decoder_dataset, hparams)
-        
-        edge_index_inference = get_edge_index_from_edges(edges['train'] + edges['val'])
+        decoder = LinkPredictor(
+            in_dim=hparams['encoder_out_dim'],
+            hidden_dim=hparams.get('link_predictor_hidden_dim', None)
+        ).to(device)
+
+        logger.info("Modelos inicializados para esta ejecución.") # Usar logger.info
+        logger.info("Modo Inductivo: El encoder solo ve la estructura de entrenamiento (cold-start).") # Mensaje para el log
+
+        # 5. Pre-entrenamiento de T-BGRL (Encoder)
+        logger.info("Iniciando pre-entrenamiento de T-BGRL para el Encoder...") # Usar logger.info
+        pre_trained_encoder = pretrain_tbgrl(
+            encoder=encoder,
+            predictor=predictor,
+            data={
+                'x': features, 
+                'edge_index': splits['train_edge_index'], 
+                'edge_weight': splits['train_edge_weight'],
+                'nodes_U_idx': nodes_U_idx, 
+                'nodes_V_idx': nodes_V_idx
+            },
+            hparams=hparams
+        )
+        logger.info("Pre-entrenamiento del Encoder completado.") # Usar logger.info
+
+        # Obtener los embeddings finales del encoder pre-entrenado
+        pre_trained_encoder.eval()
         with torch.no_grad():
-            embeddings_inference = encoder(edge_index_inference, dataset['tipo_ids'], dataset['mask_embed'])
-        
-        test_results, predictions = evaluate(
-            best_decoder,
-            embeddings_inference,
-            edges['test'],
-            all_edges_set, # Pasar el set de todos los enlaces para evitar falsos negativos
-            nodes_A_idx,   # Pasar la lista de nodos A
-            nodes_B_idx,   # Pasar la lista de nodos B
-            k=hparams['k_hits'],
-            idx2id=idx2id
+            final_node_embeddings = pre_trained_encoder(
+                features, 
+                splits['train_edge_index'],
+                splits['train_edge_weight']
             )
-        all_test_results.append(test_results)
-        
-        logging.info("\nResultados de la Ejecución en Test:")
-        for k, v in test_results.items(): logging.info(f"{k}: {v:.4f}")
-        
-        if run == hparams['num_runs'] - 1:
-            final_predictions_df = pd.DataFrame(predictions)
+        logger.info(f"Embeddings finales de nodos generados. Forma: {final_node_embeddings.shape}") # Usar logger.info
 
-        # ### AÑADIDO ### Calcular y mostrar el tiempo de la ejecución actual
-        run_end_time = time.time()
-        logging.info(f"--> Tiempo de la Ejecución {run + 1}: {run_end_time - run_start_time:.2f} segundos")
+        # 6. Entrenamiento del Link Predictor (Decoder) y Evaluación en Test
+        logger.info("Iniciando entrenamiento del Link Predictor (Decoder)...") # Usar logger.info
+        # train_link_predictor ahora devuelve las métricas del test y las predicciones
+        test_hits_k, test_roc_auc, test_ap_score, test_predictions_df = train_link_predictor(
+            decoder=decoder,
+            final_node_embeddings=final_node_embeddings,
+            data_splits={
+                'train_pos_edges': splits['train_edge_index'],
+                'train_pos_weights': splits['train_edge_weight'], 
+                'val_pos_edges': splits['val_edge_index'],
+                'test_pos_edges': splits['test_edge_index'],
+                'nodes_U_idx': nodes_U_idx, 
+                'nodes_V_idx': nodes_V_idx, 
+                'idx2id': dataset_info['idx2id'], 
+                'k': hparams['k']
+            },
+            hparams=hparams,
+            device=device,
+            all_edges_set=all_edges_set
+        )
+        logger.info("Entrenamiento del Link Predictor completado.") # Usar logger.info
 
-    # === 5. Agregación y Guardado de Resultados Finales ===
-    final_metrics = defaultdict(list)
-    for res in all_test_results:
-        for metric, value in res.items(): final_metrics[metric].append(value)
-            
-    logging.info(f"\n{'='*20} RESULTADO FINAL AGREGADO ({hparams['split_method'].upper()}) {'='*20}")
-    for metric, values in final_metrics.items():
-        mean, std = np.mean(values), np.std(values)
-        logging.info(f"{metric}: {mean:.4f} ± {std:.4f}")
+        # Almacenar resultados de esta ejecución
+        all_hits_at_k.append(test_hits_k)
+        all_roc_auc.append(test_roc_auc)
+        all_ap_score.append(test_ap_score)
+
+        end_run_time = time.time() # Finalizar contador de tiempo para esta ejecución
+        run_duration = end_run_time - start_run_time
+        all_run_times.append(run_duration)
+
+        logger.info("\nResultados de la Ejecución en Test:") # Usar logger.info
+        logger.info(f"Hits@{hparams['k']}: {test_hits_k:.4f}") # Usar logger.info
+        logger.info(f"ROC-AUC: {test_roc_auc:.4f}") # Usar logger.info
+        logger.info(f"AP: {test_ap_score:.4f}") # Usar logger.info
+        logger.info(f"--> Tiempo de la Ejecución {run_idx}: {run_duration:.2f} segundos") # Usar logger.info
+        
+        # Guardar predicciones detalladas del Test Set para cada ejecución (si se desea)
+        if test_predictions_df is not None:
+             output_predictions_path = f"link_predictions_test_set_run_{run_idx}.csv"
+             test_predictions_df.to_csv(output_predictions_path, index=False)
+             logger.info(f"Predicciones detalladas del Test Set para la Ejecución {run_idx} guardadas en: {output_predictions_path}") # Usar logger.info
+
+
+    # 7. Resultados Finales Agregados
+    logger.info("\n==================== RESULTADO FINAL AGREGADO (TEMPORAL_INDUCTIVE) ====================") # Usar logger.info
+    logger.info(f"Hits@{hparams['k']}: {np.mean(all_hits_at_k):.4f} ± {np.std(all_hits_at_k):.4f}") # Usar logger.info
+    logger.info(f"ROC-AUC: {np.mean(all_roc_auc):.4f} ± {np.std(all_roc_auc):.4f}") # Usar logger.info
+    logger.info(f"AP: {np.mean(all_ap_score):.4f} ± {np.std(all_ap_score):.4f}") # Usar logger.info
     
-    # ### AÑADIDO ### Calcular y mostrar tiempos totales y promedios
-    overall_end_time = time.time()
-    total_duration = overall_end_time - overall_start_time
-    avg_duration = total_duration / hparams['num_runs']
-    logging.info("\n--- Tiempos de Ejecución ---")
-    logging.info(f"Tiempo total para {hparams['num_runs']} ejecuciones: {total_duration:.2f} segundos ({total_duration/60:.2f} minutos)")
-    logging.info(f"Tiempo promedio por ejecución: {avg_duration:.2f} segundos")
-    
-    if final_predictions_df is not None:
-        output_path = "link_predictions_test_set.csv"
-        final_predictions_df.sort_values(by='score', ascending=False, inplace=True)
-        final_predictions_df.to_csv(output_path, index=False, float_format='%.4f')
-        logging.info(f"\nPredicciones detalladas del Test Set guardadas en: {output_path}")
+    logger.info("\n--- Tiempos de Ejecución ---") # Usar logger.info
+    logger.info(f"Tiempo total para {num_executions} ejecuciones: {np.sum(all_run_times):.2f} segundos ({np.sum(all_run_times)/60:.2f} minutos)") # Usar logger.info
+    logger.info(f"Tiempo promedio por ejecución: {np.mean(all_run_times):.2f} segundos") # Usar logger.info
+
+    logger.info("\nPipeline de WBT-GL completado.") # Usar logger.info
+
+
+if __name__ == '__main__':
+    main()
